@@ -1,4 +1,15 @@
 # based loosely on mira theme
+# GoesByJim Theme, for your viewing pleasure.
+#
+# ✅ Context-aware language version indicators (jenv, nvm, go)
+# ✅ Only shows language versions when in relevant project directories
+# ✅ Efficient single directory traversal using precmd hook
+#
+# Environment variables:
+# - GOESBYJIM_JENV: set to "hide" to completely disable jenv display.
+# - ZSH_THEME_[LANG]_PROMPT_PREFIX: can be set to override color, text, etc of the lang prompt.
+# - ZSH_THEME_[LANG]_PROMPT_SUFFIX: can be set to override end of lang prompt, must call $reset_color somewhere.
+
 ZSH_THEME_NVM_PROMPT_PREFIX="%{$fg[green]%}‹node-"
 ZSH_THEME_NVM_PROMPT_SUFFIX="›%{$reset_color%} "
 
@@ -8,8 +19,12 @@ ZSH_THEME_JENV_PROMPT_SUFFIX="›%{$reset_color%} "
 ZSH_THEME_GO_PROMPT_PREFIX="%{$fg[green]%}‹go-"
 ZSH_THEME_GO_PROMPT_SUFFIX="›%{$reset_color%} "
 
-# Detect project types with a single directory traversal
-# Sets global flags: _GOESBYJIM_HAS_JAVA, _GOESBYJIM_HAS_NODE, _GOESBYJIM_HAS_GO
+# Detect if a project is a certain lang, all the way up to root /
+# Sets a flag for later usage if within such a context:
+#   _GOESBYJIM_HAS_JAVA - Maven/Gradle projects
+#   _GOESBYJIM_HAS_NODE - Node.js projects
+#   _GOESBYJIM_HAS_GO   - Go projects
+# Called automatically via precmd hook before each prompt.
 function goesbyjim_detect_projects() {
   _GOESBYJIM_HAS_JAVA=0
   _GOESBYJIM_HAS_NODE=0
@@ -86,7 +101,8 @@ function goesbyjim_go() {
 local current_dir="%B%{$fg[cyan]%}%c%{$reset_color%}"
 # local current_dir='%{$terminfo[bold]$fg[cyan]%} %c%{$reset_color%}'
 
-# Run project detection before each prompt
+# precmd is a ZSH hook which runs at the start of the prompt render.
+# see https://zsh.sourceforge.io/Doc/Release/Functions.html#Hook-Functions
 precmd() {
   goesbyjim_detect_projects
 }
