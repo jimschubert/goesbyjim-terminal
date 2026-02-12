@@ -29,7 +29,7 @@ function goesbyjim_nvm() {
 local current_dir="%B%{$fg[cyan]%}%c%{$reset_color%}"
 # local current_dir='%{$terminfo[bold]$fg[cyan]%} %c%{$reset_color%}'
 
-local return_code="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{✗ %})%{$reset_color%}"
+local return_code="%(?:%{$fg_bold[green]%}%1{➜%}:%{$fg_bold[red]%}%1{✗%})%{$reset_color%} "
 local git_branch='$(git_prompt_info)'
 local nvm_node='$(goesbyjim_nvm)'
 local jenv_info='$(goesbyjim_jenv)'
